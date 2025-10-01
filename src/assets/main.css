@@ -41,3 +41,9 @@
     @apply h-[100vh] p-4 relative;
   }
 }
+
+@layer utilities {
+  .grid-template-columns-fit {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+}

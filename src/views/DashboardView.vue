@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap gap-8 justify-center">
+  <div class="flex flex-wrap gap-4 justify-center">
     <div
       v-for="(product, index) in productsStore.products"
       :key="index"
@@ -28,7 +28,7 @@
         </div>
         <div class="card-actions flex-row justify-end">
           <button class="btn btn-primary" @click="editProduct(index, product)">Atualizar</button>
-          <button class="btn btn-primary" @click="productsStore.removeProduct(product)">
+          <button class="btn btn-primary" @click="deleteProduct(index, product.name)">
             Apagar
           </button>
         </div>
@@ -56,6 +56,10 @@
           class="input input-bordered"
         />
       </div>
+      <div class="form-control mb-2">
+        <label class="label">Imagem URL</label>
+        <input type="text" v-model="productToEdit.product!.img" class="input input-bordered" />
+      </div>
       <div v-if="productToEdit.product!.colors?.length > 0" class="flex gap-2 items-center">
         Cores:
         <input
@@ -73,6 +77,8 @@
       <button class="btn btn-ghost" @click="cancelUpdate">Cancelar</button>
     </div>
   </div>
+
+  <AlertToast :toast="toast" :productName="productName" message="apagado" />
   <div class="p-3 mt-3 absolute right-0 bottom-0">
     <button class="btn btn-primary" @click="router.push('/form')">Ir para o formulário</button>
   </div>
@@ -83,9 +89,12 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProductsStore, type Product } from '@/stores/productsStore'
+import AlertToast from '@/components/AlertToast.vue'
 
 const router = useRouter()
 const productsStore = useProductsStore()
+const toast = ref(false)
+const productName = ref('')
 
 const productToEdit = ref<{ index: number | null; product: Product | null }>({
   product: null,
@@ -111,6 +120,16 @@ const cancelUpdate = () => {
     index: null,
     product: null,
   }
+}
+
+const deleteProduct = async (index: number, name: string) => {
+  await productsStore.removeProduct(productsStore.products[index])
+
+  productName.value = name
+  toast.value = true
+  setTimeout(() => {
+    toast.value = false
+  }, 3000)
 }
 
 // const quantityLabel = computed(() => `Quantidade: ${quantityProduct.value}`)

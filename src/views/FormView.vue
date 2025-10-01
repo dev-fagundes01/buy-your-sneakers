@@ -3,41 +3,19 @@
     <p class="text-lg">Formulário</p>
     <div>
       <form action="" class="flex gap-3 items-center" @submit.prevent="addStore">
-        <fieldset class="fieldset">
-          <legend class="fieldset-legend">Nome:</legend>
-          <input v-model="product.name" type="text" class="input" placeholder="Ex: Puma" />
-        </fieldset>
-
-        <fieldset class="fieldset">
-          <legend class="fieldset-legend">Quantidade:</legend>
-          <input
-            v-model.number="product.quantity"
-            type="number"
-            class="input"
-            placeholder="Ex: 50"
-          />
-        </fieldset>
-
-        <fieldset class="fieldset">
-          <legend class="fieldset-legend">Preço:</legend>
-          <input
-            v-model.number="product.price"
-            type="number"
-            class="input"
-            placeholder="Ex: 349.99"
-          />
-        </fieldset>
-
-        <fieldset class="fieldset">
-          <legend class="fieldset-legend">Imagem:</legend>
-          <input
-            v-model="product.img"
-            type="text"
-            class="input"
-            placeholder="Ex: https://images.puma.net/images/402373/01/sv01/fnd/MEX/"
-          />
-        </fieldset>
-
+        <BaseInput v-model="product.name" label="Nome" placeholder="Ex: Puma" />
+        <BaseInput
+          v-model="product.quantity"
+          label="Quantidade"
+          type="number"
+          placeholder="Ex: 50"
+        />
+        <BaseInput v-model="product.price" label="Preço" type="number" placeholder="Ex: 349.99" />
+        <BaseInput
+          v-model="product.img"
+          label="Imagem"
+          placeholder="Ex: https://images.puma.net/images/402373/01/sv01/fnd/MEX/"
+        />
         <div>
           <legend class="fieldset-legend">Cores</legend>
           <div class="w-20">
@@ -69,6 +47,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProductsStore } from '@/stores/productsStore'
+import BaseInput from '@/components/BaseInput.vue'
 
 const productsStore = useProductsStore()
 const router = useRouter()
